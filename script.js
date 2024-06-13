@@ -62,11 +62,16 @@ function formatTime(seconds) {
     const secs = Math.floor(seconds % 60);
     return `${minutes}:${secs < 10 ? '0' : ''}${secs}`;
 }
+const nextButton = document.getElementById('next-btn') 
 
 function updateProgress() {
     const progress = (audioPlayer.currentTime / audioPlayer.duration) * 100;
     progressBar.style.width = `${progress}%`;
     currentTimeElem.textContent = formatTime(audioPlayer.currentTime);
+    if (audioPlayer.currentTime === audioPlayer.duration){
+        nextButton.click()
+
+    }
 }
 
 loadSong(currentSongIndex);
@@ -93,7 +98,7 @@ function pauseSong() {
     pauseIcon.classList.add('hidden');
 }
 
-audioPlayer.addEventListener('timeupdate', updateProgress);
+audioPlayer.addEventListener('timeupdate', updateProgress)
 
 progressContainer.addEventListener('click', (e) => {
     const rect = progressContainer.getBoundingClientRect();
@@ -101,6 +106,7 @@ progressContainer.addEventListener('click', (e) => {
     const width = rect.width;
     const newTime = (offsetX / width) * audioPlayer.duration;
     audioPlayer.currentTime = newTime;
+  
 });
 
 volumeBar.addEventListener('input', () => {
@@ -112,7 +118,6 @@ document.getElementById('prev-btn').addEventListener('click', () => {
     loadSong(currentSongIndex);
     playSong();
 });
-
 document.getElementById('next-btn').addEventListener('click', () => {
     currentSongIndex = (currentSongIndex + 1) % songs.length;
     loadSong(currentSongIndex);
